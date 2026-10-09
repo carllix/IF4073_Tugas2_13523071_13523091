@@ -1,7 +1,7 @@
 function [outImg, info] = periodicRestoreImage(img, method, params)
 % E: periodic noise removal in the frequency domain, channel by channel
 % params: D0, W, order, centers, notchType, padding (default "none")
-% info:   H, spectrumIn, spectrumOut, label, spectrumSize
+% info:   H, spectrumIn, spectrumOut, channels, label, spectrumSize
     arguments
         img {mustBeNumeric}
         method (1,1) string {mustBeMember(method, ["IBRF", "BBRF", "GBRF", "notch"])}
@@ -54,6 +54,7 @@ function [outImg, info] = periodicRestoreImage(img, method, params)
         "H", H, ...
         "spectrumIn", specIn, ...
         "spectrumOut", specOut, ...
+        "channels", channelNames(C), ...
         "spectrumSize", [P, Q], ...
         "label", label);
 

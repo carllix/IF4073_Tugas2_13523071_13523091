@@ -1,7 +1,7 @@
 function [outImg, info] = motionRestoreImage(img, method, params)
 % F: motion blur restoration in the frequency domain, channel by channel
 % params: L, angle, threshold, radius (inverse), K (wiener), padding (default "mirror")
-% info:   psf, H, spectrumIn, spectrumOut, label, spectrumSize
+% info:   psf, H, spectrumIn, spectrumOut, channels, label, spectrumSize
     arguments
         img {mustBeNumeric}
         method (1,1) string {mustBeMember(method, ["inverse", "wiener"])}
@@ -59,6 +59,7 @@ function [outImg, info] = motionRestoreImage(img, method, params)
         "H", H, ...
         "spectrumIn", specIn, ...
         "spectrumOut", specOut, ...
+        "channels", channelNames(C), ...
         "spectrumSize", [P, Q], ...
         "label", label);
 

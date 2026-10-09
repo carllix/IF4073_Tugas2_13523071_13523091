@@ -2,7 +2,7 @@ function [outImg, info] = frequencyFilterImage(img, method, params)
 % B/C: low-pass or high-pass filtering in the frequency domain, channel by channel
 % params: D0 (ILPF/IHPF/BLPF/BHPF), sigma (GLPF/GHPF), order (BLPF/BHPF),
 %         padding "zero" | "mirror" | "none" (default "zero"), outputMode "clip" | "normalize" (default "clip")
-% info:   H, spectrumIn, spectrumOut (log magnitude in [0,1], P x Q x C), label, spectrumSize
+% info:   H, spectrumIn, spectrumOut (log magnitude in [0,1], P x Q x C), channels, label, spectrumSize
     arguments
         img {mustBeNumeric}
         method (1,1) string {mustBeMember(method, ["ILPF", "GLPF", "BLPF", "IHPF", "GHPF", "BHPF"])}
@@ -54,6 +54,7 @@ function [outImg, info] = frequencyFilterImage(img, method, params)
         "H", H, ...
         "spectrumIn", specIn, ...
         "spectrumOut", specOut, ...
+        "channels", channelNames(C), ...
         "spectrumSize", [P, Q], ...
         "label", label);
 

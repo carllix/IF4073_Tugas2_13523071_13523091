@@ -1,6 +1,6 @@
 function [outImg, info] = brightenImage(img, method, params)
 % D: brightening in the frequency domain, channel by channel
-% "homomorphic": D0, gammaL, gammaH, c (default 1), padding "zero" | "mirror" | "none" (default "zero")
+% "homomorphic": D0, gammaL, gammaH, c (default 1), padding "zero" | "mirror" | "none" (default "mirror")
 % "dc":          gain (a), offset (b)  ->  G = a F + b M N delta(u,v), i.e. s = a r + b
 % info: H, spectrumIn, spectrumOut (log magnitude in [0,1], P x Q x C), label, spectrumSize
     arguments
@@ -14,7 +14,7 @@ function [outImg, info] = brightenImage(img, method, params)
 
     switch method
         case "homomorphic"
-            padding = string(getParam(params, "padding", "zero"));
+            padding = string(getParam(params, "padding", "mirror"));
             c = getParam(params, "c", 1);
             if padding == "none"
                 P = M; Q = N;

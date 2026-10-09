@@ -4,7 +4,7 @@ function [s, Zshift, Sshift] = homomorphicBrighten(imgChannel, H, padding)
     arguments
         imgChannel (:,:) {mustBeNumeric}
         H (:,:) double
-        padding (1,1) string {mustBeMember(padding, ["zero", "mirror", "none"])} = "zero"
+        padding (1,1) string {mustBeMember(padding, ["zero", "mirror", "none"])} = "mirror"
     end
 
     z = log((double(imgChannel) + 1) / 256);

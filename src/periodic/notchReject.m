@@ -1,5 +1,5 @@
 function H = notchReject(P, Q, centers, D0, type, order)
-% NRF: H = prod_k H_k H_-k, highpass of radius D0 centred on each spike [row, col] and its mirror
+% NRF: H = prod_k H_k H_-k
     arguments
         P (1,1) double {mustBePositive, mustBeInteger}
         Q (1,1) double {mustBePositive, mustBeInteger}

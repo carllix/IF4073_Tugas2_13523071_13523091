@@ -1,7 +1,7 @@
 function [outImg, info] = frequencyFilterImage(img, method, params)
 % B/C: low-pass or high-pass filtering in the frequency domain, channel by channel
 % params: D0 (ILPF/IHPF/BLPF/BHPF), sigma (GLPF/GHPF), order (BLPF/BHPF),
-%         usePadding (default true), outputMode "clip" | "normalize" (default "clip")
+%         padding "zero" | "mirror" | "none" (default "zero"), outputMode "clip" | "normalize" (default "clip")
 % info:   H, spectrumIn, spectrumOut (log magnitude in [0,1], luminance), label, spectrumSize
     arguments
         img {mustBeNumeric}
@@ -9,14 +9,14 @@ function [outImg, info] = frequencyFilterImage(img, method, params)
         params (1,1) struct = struct()
     end
 
-    usePadding = getParam(params, "usePadding", true);
+    padding = string(getParam(params, "padding", "zero"));
     outputMode = getParam(params, "outputMode", "clip");
 
     [M, N, C] = size(img);
-    if usePadding
-        P = 2*M; Q = 2*N;
-    else
+    if padding == "none"
         P = M; Q = N;
+    else
+        P = 2*M; Q = 2*N;
     end
 
     switch method
@@ -42,12 +42,12 @@ function [outImg, info] = frequencyFilterImage(img, method, params)
 
     g = zeros(M, N, C);
     for k = 1:C
-        g(:, :, k) = filterChannel(img(:, :, k), H, usePadding);
+        g(:, :, k) = filterChannel(img(:, :, k), H, padding);
     end
     outImg = toOutputImage(g, outputMode);
 
     % spectra are shown for the luminance so RGB and grayscale look the same in the UI
-    [~, Fshift, Gshift] = filterChannel(toGrayscale(img), H, usePadding);
+    [~, Fshift, Gshift] = filterChannel(toGrayscale(img), H, padding);
 
     info = struct( ...
         "H", H, ...

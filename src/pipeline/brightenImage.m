@@ -1,6 +1,6 @@
 function [outImg, info] = brightenImage(img, method, params)
 % D: brightening in the frequency domain, channel by channel
-% "homomorphic": D0, gammaL, gammaH, c (default 1), usePadding (default true)
+% "homomorphic": D0, gammaL, gammaH, c (default 1), padding "zero" | "mirror" | "none" (default "zero")
 % "dc":          gain (a), offset (b)  ->  G = a F + b M N delta(u,v), i.e. s = a r + b
 % info: H, spectrumIn, spectrumOut (log magnitude in [0,1], luminance), label, spectrumSize
     arguments
@@ -15,19 +15,19 @@ function [outImg, info] = brightenImage(img, method, params)
 
     switch method
         case "homomorphic"
-            usePadding = getParam(params, "usePadding", true);
+            padding = string(getParam(params, "padding", "zero"));
             c = getParam(params, "c", 1);
-            if usePadding
-                P = 2*M; Q = 2*N;
-            else
+            if padding == "none"
                 P = M; Q = N;
+            else
+                P = 2*M; Q = 2*N;
             end
 
             H = homomorphicFilter(P, Q, params.D0, params.gammaL, params.gammaH, c);
             for k = 1:C
-                g(:, :, k) = homomorphicBrighten(img(:, :, k), H, usePadding);
+                g(:, :, k) = homomorphicBrighten(img(:, :, k), H, padding);
             end
-            [~, Fshift, Gshift] = homomorphicBrighten(lum, H, usePadding);   % spectrum of ln f
+            [~, Fshift, Gshift] = homomorphicBrighten(lum, H, padding);   % spectrum of ln f
             label = sprintf("Homomorphic (D0 = %g, gammaL = %g, gammaH = %g, c = %g)", ...
                 params.D0, params.gammaL, params.gammaH, c);
 

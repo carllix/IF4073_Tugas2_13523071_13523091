@@ -1,16 +1,16 @@
-function [g, Fshift, Gshift] = filterChannel(imgChannel, H, usePadding)
+function [g, Fshift, Gshift] = filterChannel(imgChannel, H, padding)
 % g = IDFT{ H .* F }, H built for the (padded) spectrum size; returns double, not clipped
     arguments
         imgChannel (:,:) {mustBeNumeric}
         H (:,:) double
-        usePadding (1,1) logical = true
+        padding (1,1) string {mustBeMember(padding, ["zero", "mirror", "none"])} = "zero"
     end
 
     [M, N] = size(imgChannel);
-    if usePadding
-        f = padImage(imgChannel);
-    else
+    if padding == "none"
         f = double(imgChannel);
+    else
+        f = padImage(imgChannel, padding);
     end
 
     if ~isequal(size(H), size(f))

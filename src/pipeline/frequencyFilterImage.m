@@ -2,7 +2,7 @@ function [outImg, info] = frequencyFilterImage(img, method, params)
 % B/C: low-pass or high-pass filtering in the frequency domain, channel by channel
 % params: D0 (ILPF/IHPF/BLPF/BHPF), sigma (GLPF/GHPF), order (BLPF/BHPF),
 %         padding "zero" | "mirror" | "none" (default "zero"), outputMode "clip" | "normalize" (default "clip")
-% info:   H, spectrumIn, spectrumOut (log magnitude in [0,1], luminance), label, spectrumSize
+% info:   H, spectrumIn, spectrumOut (log magnitude in [0,1], P x Q x C), label, spectrumSize
     arguments
         img {mustBeNumeric}
         method (1,1) string {mustBeMember(method, ["ILPF", "GLPF", "BLPF", "IHPF", "GHPF", "BHPF"])}
@@ -41,18 +41,19 @@ function [outImg, info] = frequencyFilterImage(img, method, params)
     end
 
     g = zeros(M, N, C);
+    specIn = zeros(P, Q, C);
+    specOut = zeros(P, Q, C);
     for k = 1:C
-        g(:, :, k) = filterChannel(img(:, :, k), H, padding);
+        [g(:, :, k), Fshift, Gshift] = filterChannel(img(:, :, k), H, padding);
+        specIn(:, :, k) = logMagnitude(Fshift);
+        specOut(:, :, k) = logMagnitude(Gshift);
     end
     outImg = toOutputImage(g, outputMode);
 
-    % spectra are shown for the luminance so RGB and grayscale look the same in the UI
-    [~, Fshift, Gshift] = filterChannel(toGrayscale(img), H, padding);
-
     info = struct( ...
         "H", H, ...
-        "spectrumIn", logMagnitude(Fshift), ...
-        "spectrumOut", logMagnitude(Gshift), ...
+        "spectrumIn", specIn, ...
+        "spectrumOut", specOut, ...
         "spectrumSize", [P, Q], ...
         "label", label);
 

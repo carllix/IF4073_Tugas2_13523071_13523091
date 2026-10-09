@@ -2,7 +2,7 @@ function [outImg, info] = brightenImage(img, method, params)
 % D: brightening in the frequency domain, channel by channel
 % "homomorphic": D0, gammaL, gammaH, c (default 1), padding "zero" | "mirror" | "none" (default "zero")
 % "dc":          gain (a), offset (b)  ->  G = a F + b M N delta(u,v), i.e. s = a r + b
-% info: H, spectrumIn, spectrumOut (log magnitude in [0,1], luminance), label, spectrumSize
+% info: H, spectrumIn, spectrumOut (log magnitude in [0,1], P x Q x C), label, spectrumSize
     arguments
         img {mustBeNumeric}
         method (1,1) string {mustBeMember(method, ["homomorphic", "dc"])}
@@ -11,7 +11,6 @@ function [outImg, info] = brightenImage(img, method, params)
 
     [M, N, C] = size(img);
     g = zeros(M, N, C);
-    lum = toGrayscale(img);
 
     switch method
         case "homomorphic"
@@ -24,10 +23,13 @@ function [outImg, info] = brightenImage(img, method, params)
             end
 
             H = homomorphicFilter(P, Q, params.D0, params.gammaL, params.gammaH, c);
+            specIn = zeros(P, Q, C);
+            specOut = zeros(P, Q, C);
             for k = 1:C
-                g(:, :, k) = homomorphicBrighten(img(:, :, k), H, padding);
+                [g(:, :, k), Zshift, Sshift] = homomorphicBrighten(img(:, :, k), H, padding);
+                specIn(:, :, k) = logMagnitude(Zshift);
+                specOut(:, :, k) = logMagnitude(Sshift);
             end
-            [~, Fshift, Gshift] = homomorphicBrighten(lum, H, padding);   % spectrum of ln f
             label = sprintf("Homomorphic (D0 = %g, gammaL = %g, gammaH = %g, c = %g)", ...
                 params.D0, params.gammaL, params.gammaH, c);
 
@@ -35,10 +37,13 @@ function [outImg, info] = brightenImage(img, method, params)
             P = M; Q = N;
             % H is a gain a everywhere; the offset b only touches the DC sample
             H = params.gain * ones(P, Q);
+            specIn = zeros(P, Q, C);
+            specOut = zeros(P, Q, C);
             for k = 1:C
-                g(:, :, k) = dcBrighten(img(:, :, k), params.gain, params.offset);
+                [g(:, :, k), Fshift, Gshift] = dcBrighten(img(:, :, k), params.gain, params.offset);
+                specIn(:, :, k) = logMagnitude(Fshift);
+                specOut(:, :, k) = logMagnitude(Gshift);
             end
-            [~, Fshift, Gshift] = dcBrighten(lum, params.gain, params.offset);
             label = sprintf("DC Brightening (a = %g, b = %g)", params.gain, params.offset);
     end
 
@@ -46,8 +51,8 @@ function [outImg, info] = brightenImage(img, method, params)
 
     info = struct( ...
         "H", H, ...
-        "spectrumIn", logMagnitude(Fshift), ...
-        "spectrumOut", logMagnitude(Gshift), ...
+        "spectrumIn", specIn, ...
+        "spectrumOut", specOut, ...
         "spectrumSize", [P, Q], ...
         "label", label);
 

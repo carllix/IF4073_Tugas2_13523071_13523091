@@ -32,8 +32,13 @@ function [outImg, info] = periodicRestoreImage(img, method, params)
             notchType = string(getParam(params, "notchType", "butterworth"));
             order = getParam(params, "order", 2);
             H = notchReject(P, Q, params.centers, params.D0, notchType, order);
-            label = sprintf("Notch %s (D0 = %g, n = %g, centers = %s)", ...
-                notchType, params.D0, order, mat2str(params.centers));
+            if notchType == "butterworth"
+                label = sprintf("Notch %s (D0 = %g, n = %g, centers = %s)", ...
+                    notchType, params.D0, order, mat2str(params.centers));
+            else
+                label = sprintf("Notch %s (D0 = %g, centers = %s)", ...
+                    notchType, params.D0, mat2str(params.centers));
+            end
     end
 
     g = zeros(M, N, C);

@@ -1,0 +1,7 @@
+Parameters
+Wiener
+L = 15
+angle = -25
+K = 0.05
+Spectrum size: 1280 x 1280
+|H| range: [1.889e-07, 1]

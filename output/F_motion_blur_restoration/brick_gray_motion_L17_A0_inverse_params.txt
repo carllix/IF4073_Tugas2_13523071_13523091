@@ -1,0 +1,8 @@
+Parameters
+Inverse
+L = 17
+angle = 0
+mode = threshold
+threshold = 0.05
+Spectrum size: 1024 x 1024
+|H| range: [8.263e-05, 1]

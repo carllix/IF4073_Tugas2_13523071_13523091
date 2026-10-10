@@ -1,0 +1,7 @@
+Parameters
+Wiener
+L = 19
+angle = 20
+K = 0.03
+Spectrum size: 1024 x 1024
+|H| range: [5.32e-07, 1]

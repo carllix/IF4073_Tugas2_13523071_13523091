@@ -1,0 +1,7 @@
+Parameters
+GBRF
+padding = none
+D0 = 39
+W = 4
+Spectrum size: 512 x 512
+|H| range: [0, 1]

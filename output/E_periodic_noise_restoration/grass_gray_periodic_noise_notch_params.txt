@@ -1,0 +1,11 @@
+Parameters
+Notch gaussian
+padding = none
+notchType = gaussian
+k = 4
+rDC = 10
+D0 = 6
+notch centres (dRow, dCol): 1 pairs
+   (20, 26) and (-20, -26)
+Spectrum size: 512 x 512
+|H| range: [0, 1]

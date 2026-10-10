@@ -1,0 +1,12 @@
+Parameters
+Notch butterworth
+padding = none
+notchType = butterworth
+k = 4
+rDC = 10
+D0 = 7
+order = 2
+notch centres (dRow, dCol): 1 pairs
+   (15, -36) and (-15, 36)
+Spectrum size: 512 x 512
+|H| range: [0, 1]

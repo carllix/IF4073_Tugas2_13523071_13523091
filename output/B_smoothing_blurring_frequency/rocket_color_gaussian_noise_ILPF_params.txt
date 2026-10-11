@@ -1,0 +1,8 @@
+Parameters
+ILPF
+padding = mirror
+D0 = 180
+Spectrum size: 854 x 1280
+|H| range: [0, 1]
+PSNR vs reference: 26.71 dB (input: 22.29 dB)
+MSE vs reference: 138.70

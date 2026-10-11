@@ -1,0 +1,7 @@
+Parameters
+GHPF
+padding = zero
+outputMode = clip
+sigma = 30
+Spectrum size: 344 x 896
+|H| range: [0, 1]

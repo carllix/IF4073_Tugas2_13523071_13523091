@@ -1,0 +1,8 @@
+Parameters
+BHPF
+padding = zero
+outputMode = clip
+D0 = 30
+order = 2
+Spectrum size: 344 x 896
+|H| range: [0, 1]

@@ -1,0 +1,11 @@
+Parameters
+Homomorphic
+padding = mirror
+D0 = 10
+gammaL = 0.2
+gammaH = 1
+c = 2
+Spectrum size: 1024 x 1024
+|H| range: [0.2, 1]
+PSNR vs reference: 23.65 dB (input: 6.36 dB)
+MSE vs reference: 280.68

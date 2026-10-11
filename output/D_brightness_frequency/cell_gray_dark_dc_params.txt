@@ -1,0 +1,8 @@
+Parameters
+DC Brightening
+gain = 3.6
+offset = 22
+Spectrum size: 640 x 533
+|H| range: [3.6, 3.6]
+PSNR vs reference: 38.77 dB (input: 12.86 dB)
+MSE vs reference: 8.63

@@ -1,0 +1,9 @@
+Parameters
+BLPF
+padding = mirror
+D0 = 260
+order = 2
+Spectrum size: 1024 x 1024
+|H| range: [0.01635, 1]
+PSNR vs reference: 26.61 dB (input: 21.31 dB)
+MSE vs reference: 141.98

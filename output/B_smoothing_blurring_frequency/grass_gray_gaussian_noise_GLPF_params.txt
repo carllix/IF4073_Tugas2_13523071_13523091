@@ -1,0 +1,8 @@
+Parameters
+GLPF
+padding = mirror
+sigma = 340
+Spectrum size: 1024 x 1024
+|H| range: [0.1036, 1]
+PSNR vs reference: 25.03 dB (input: 22.12 dB)
+MSE vs reference: 204.35
